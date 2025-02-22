@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favori Dizim</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">Favori Dizim</div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        
+        <ul class="nav-links">
+            <li><a href="#home">Dizi</a></li>
+            <li><a href="#characters">Karakterler</a></li>
+            <li><a href="#favorite-scene">Favori Sahne</a></li>
+            <li><a href="#episodes">Bölümler</a></li>
+        </ul>
+        <div class="profile-icon">
+            <i class="material-icons" style="font-size: 36px; color: white;">account_circle</i>
+        </div>
+        <label for="menu-toggle" class="hamburger">
+            <i class="material-icons" style="font-size: 36px; color: white;">menu</i>
+        </label>
+
+    </nav>
+    
+
+    <section id="home" class="home">
+        <h1><a href="https://www.imdb.com/title/tt0411008/" target="_blank">Lost</a></h1>
+        <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+        <button id="fav-button" class="fav-button">Favorilere Ekle</button>
+        <p>Bir uçak kazasından sağ kurtulanlar, görünüşte ıssız bir tropik adada hayatta kalabilmek için birlikte çalışmak zorunda kalıyorlar.</p>
+    </section>
+
+    <section id="characters" class="characters">
+        <h2>Ana Karakterler</h2>
+        <div class="character-container">
+            <div class="character-card">
+                <img src="images/character1.jpg" alt="Karakter 1">
+                <h3>Jack Shephard</h3>
+                <p>Jack Shephard, Oceanic 815 kazasından sonra kazazedelerin lideri haline gelen, sorumluluk sahibi ve fedakâr bir doktordur. Bilime ve mantığa bağlı bir karakter olsa da zamanla kader ve inanç kavramlarıyla yüzleşmek zorunda kalır.</p>
+            </div>
+            <div class="character-card">
+                <img src="images/character2.jpg" alt="Karakter 2">
+                <h3>Kate Austen</h3>
+                <p>Kate Austen, güçlü, bağımsız ve hayatta kalma becerileri yüksek bir karakterdir. Geçmişinde suçlu bir geçmişi olsa da, adada yeni bir başlangıç yapmaya ve kendini kanıtlamaya çalışır.</p>
+            </div>
+            <div class="character-card">
+                <img src="images/character3.jpg" alt="Karakter 3">
+                <h3>John Locke</h3>
+                <p>John Locke, doğaya, kadere ve adanın mistik güçlerine inanan derin bir karakterdir. Adada kendini yeniden keşfeden ve hayatının gerçek anlamını burada bulan bir figür olarak, inanç ve özgürlük kavramlarını temsil eder.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="favorite-scene" class="favorite-scene">
+        <h2>Favori Sahnem</h2>
+        <div class="scene-container">
+            <h2>John Locke - "Don't Tell Me What I Can't Do!"</h2>
+            <p>John Locke, hayatı boyunca başkalarının sınırlarını çizdiği bir adamdı. Ancak adada, kaderini ve gücünü keşfetti.  
+            Bu sahnede, adada geçirdiği dönüşümün başlangıcını görüyoruz.</p>
+            
+            <div class="video-container">
+                <iframe width="560" height="315" 
+                    src="https://www.youtube.com/embed/DQFhbQuBEf8" 
+                    title="John Locke - Don't tell me what I can't do" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
+    <section id="episodes" class="episodes">
+        <h2>📺 Lost - Öne Çıkan Bölümler</h2>
+        <div class="episode-list">
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 1: Pilot (Bölüm 1 & 2)</h3>
+                <p>Oceanic 815 uçuşu ıssız bir adaya düşer. Hayatta kalanlar neyin içinde olduklarını anlamaya çalışır.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 4: Walkabout</h3>
+                <p>John Locke’un geçmişi ortaya çıkar ve adanın onun için nasıl bir ikinci şans sunduğu gösterilir.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 8: Confidence Man</h3>
+                <p>Sawyer’ın geçmişine dair sırlar açığa çıkar. Grup içindeki gerilim artar.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 11: All the Best Cowboys Have Daddy Issues</h3>
+                <p>Jack’in babasıyla olan ilişkisi ve liderlik yetenekleri sınanır.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 17: ...In Translation</h3>
+                <p>Jin ve Sun arasındaki ilişkiyi keşfettiğimiz, karakter derinliği sunan bir bölüm.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 23: Exodus (Bölüm 1 & 2)</h3>
+                <p>Grup, adadan kaçma planları yaparken gizemli olaylarla yüzleşir. Kara duman yaratığı ortaya çıkar.</p>
+            </div>
+            <div class="episode">
+                <img src="images/poster.jpg" alt="Dizi Posteri" class="poster">
+                <h3>Bölüm 25: Live Together, Die Alone</h3>
+                <p>Desmond’un hikayesi ve Dharma İnisiyatifi'nin sırları ortaya çıkarken, ada hakkında büyük keşifler yapılır.</p>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>Bu sayfa <strong>İrem</strong> tarafından tasarlanmıştır.</p>
+        <div class="social-media">
+            <a href="https://github.com/IremDAL/insider-bootcamp" target="_blank">
+                <span class="material-icons">code</span>
+            </a>
+            <a href="https://www.linkedin.com/in/irem-dal-0813b6240/" target="_blank">
+                <span class="material-icons">business_center</span>
+            </a>
+
+        </div>
+    </footer>
+    
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const favButton = document.getElementById("fav-button");
+        const menuToggle = document.getElementById("menu-toggle");
+        const navLinks = document.querySelector(".nav-links");
+        const navItems = document.querySelectorAll(".nav-links a");
+
+        menuToggle.addEventListener("change", () => {
+            if (menuToggle.checked) {
+                navLinks.style.display = "flex"; 
+            } else {
+                navLinks.style.display = "none"; 
+            }
+        });
+
+        navItems.forEach(link => {
+            link.addEventListener("click", () => {
+                menuToggle.checked = false; 
+                navLinks.style.display = "none";
+            });
+        });
+        if (favButton) {
+            favButton.addEventListener("click", () => {
+                favButton.classList.toggle("added");
+                document.body.classList.toggle("bg-changed"); 
+            });
+        }
+    });
+</script>
+</html>
+
+
