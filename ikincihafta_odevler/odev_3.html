@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geri Sayım Aracı</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        input {
+            padding: 5px;
+            font-size: 16px;
+            width: 100px;
+            text-align: center;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>⏳ Geri Sayım Aracı</h1>
+    <label for="timeInput">Süre (saniye):</label>
+    <input type="number" id="timeInput">
+    <br><br>
+    <button onclick="startCountdown()">Başlat 🚀</button>
+    <button onclick="pauseCountdown()">Duraklat ⏸️</button>
+    <button onclick="resetCountdown()">Sıfırla 🔄</button>
+    <p id="countdownDisplay"></p>
+
+    <script>
+        let countdown;
+        let timeRemaining;
+        let isPaused = false;
+
+        function startCountdown() {
+            clearInterval(countdown);
+            timeRemaining = parseInt(document.getElementById('timeInput').value);
+            
+            if (isNaN(timeRemaining) || timeRemaining <= 0) {
+                alert("Lütfen pozitif bir sayı girin.");
+                return;
+            }
+            isPaused = false;
+            countdown = setInterval(() => {
+                if (!isPaused) {
+                    document.getElementById('countdownDisplay').textContent = "Süre: " + timeRemaining;
+                    timeRemaining--;
+
+                    if (timeRemaining < 0) {
+                        clearInterval(countdown);
+                        countdown = null;
+                        document.getElementById('countdownDisplay').textContent = "Süre doldu! 🚀";
+                    }
+                }
+            }, 1000);
+        }
+
+        function pauseCountdown() {
+            isPaused = !isPaused;
+           
+        }
+
+        function resetCountdown() {
+            clearInterval(countdown);
+            countdown = null;
+            isPaused = false;
+            timeRemaining = parseInt(document.getElementById('timeInput').value);
+            document.getElementById('countdownDisplay').textContent = "Süre: " + timeRemaining;
+        }
+    </script>
+
+</body>
+</html>
