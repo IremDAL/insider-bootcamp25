@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gerçek Zamanlı Görev Yönetimi</title>
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Görev Yönetimi Uygulaması</h1>
+  </header>
+
+  <main>
+    <div class="left-panel">
+    <section class="task-form">
+      <h2>Yeni Görev Ekle</h2>
+      <form id="taskForm">
+        <div class="form-group">
+          <label for="title">Görev Başlığı</label>
+          <input type="text" id="title" name="title" required />
+        </div>
+
+        <div class="form-group">
+          <label for="description">Açıklama</label>
+          <textarea id="description" name="description"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Öncelik</label>
+          <div class="radio-group">
+            <label>
+              <input type="radio" name="priority" value="Düşük" />
+              Düşük
+            </label>
+            <label>
+              <input type="radio" name="priority" value="Orta" />
+              Orta
+            </label>
+            <label>
+              <input type="radio" name="priority" value="Yüksek" />
+              Yüksek
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" id="addTaskBtn">Ekle</button>
+      </form>
+
+      <p class="error-message" id="errorMessage"></p>
+      
+    </section>
+
+
+    <section class="filters">
+      <button id="filterCompletedBtn">Sadece Tamamlananları Göster</button>
+      <button id="sortPriorityBtn">Önceliğe Göre Sırala (Düşük → Yüksek)</button>
+    </section>
+</div>
+
+    <section class="task-list-section">
+      <h2>Görev Listesi</h2>
+      <ul id="taskList">
+
+      </ul>
+    </section>
+  </main>
+
+  <script src="index.js"></script>
+</body>
+</html>
