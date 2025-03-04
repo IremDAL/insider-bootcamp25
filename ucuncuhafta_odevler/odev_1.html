@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Öğrenci Listesi</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        tr:hover {
+            background-color: lightblue;
+        }
+        .highlight {
+            background-color: rgb(115, 115, 200) !important; 
+        }
+        .delete-btn {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Öğrenci Listesi</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>İsim</th>
+                <th>Sınıf</th>
+                <th>Okul Numrası</th>
+                <th>Email</th>
+                <th>Sil</th>
+            </tr>
+        </thead>
+        <tbody id="studentTable">
+        </tbody>
+    </table>
+
+    <h3>Yeni Öğrenci Ekle</h3>
+    <form id="studentForm">
+        <input type="text" id="name" placeholder="İsim" required>
+        <input type="text" id="class" placeholder="Sınıf" required>
+        <input type="text" id="no" placeholder="Okul Numrası" required>
+        <input type="text" id="email" placeholder="Email" required>
+        <button type="submit">Ekle</button>
+    </form>
+
+    <script>
+        let studentData = JSON.parse(localStorage.getItem("students")) || [
+            { name: "Ali", class: "3A" , no : "123" ,email :"ali@gmail.com"},
+            { name: "Ayşe", class: "4B" , no : "456" ,email :"ayse@gmail.com"},
+            { name: "Mehmet", class: "2C" , no : "789" ,email :"mehmet@gmail.com" }
+        ];
+        
+        function saveToLocalStorage() {
+            localStorage.setItem("students", JSON.stringify(studentData));
+        }
+
+        function createTable() {
+            $("#studentTable").empty();
+            studentData.forEach((student, index) => {
+                $("#studentTable").append(`
+                    <tr>
+                        <td>${student.name}</td>
+                        <td>${student.class}</td>
+                        <td>${student.no}</td>
+                        <td>${student.email}</td>
+                        <td class="delete-btn" data-index="${index}">Sil</td>
+                    </tr>
+                `);
+            });
+        }
+
+        $("#studentForm").submit(function (event) {
+            event.preventDefault();
+            let name = $("#name").val();
+            let classValue = $("#class").val();
+            let noValue = $("#no").val();
+            let emailValue = $("#email").val();
+            studentData.push({ name, class: classValue , no : noValue , email : emailValue});
+            saveToLocalStorage(); 
+            createTable();
+            $("#name").val("");
+            $("#class").val("");
+            $("#no").val("");
+            $("#email").val("");
+        });
+
+        $(document).on("click", ".delete-btn", function () {
+            let index = $(this).data("index");
+            studentData.splice(index, 1);
+            saveToLocalStorage();
+            createTable();
+        });
+
+        $(document).on("click", "tr", function () {
+            $(this).toggleClass("highlight");
+        });
+
+        createTable();
+    </script>
+
+</body>
+</html>
