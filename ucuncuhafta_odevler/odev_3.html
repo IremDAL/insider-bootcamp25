@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Rastgele Profil Kartları & Animasyonlu Arayüz</title>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #6fcef4;
+    }
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #fetchUsersBtn {
+      display: block;
+      margin: 0 auto 30px auto;
+      padding: 12px 20px;
+      background-color: rgba(121, 28, 93, 0.986);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.3s;
+    }
+    #fetchUsersBtn:hover {
+      background-color: #ff00b7;
+    }
+    @keyframes customShake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-5px); }
+      40% { transform: translateX(5px); }
+      60% { transform: translateX(-5px); }
+      80% { transform: translateX(5px); }
+    }
+
+    .shake-anim {
+      animation: customShake 0.5s ease;
+    }
+    
+
+    #profilesContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 50px;
+    }
+    .profile-card {
+      width: 220px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background-color: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      padding: 15px;
+      display: none; 
+      transition: box-shadow 0.3s ease;
+      position: relative;
+    }
+    .profile-card:hover {
+      box-shadow: 0 0 12px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+    .profile-card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+    .profile-card h2 {
+      margin: 8px 0 5px;
+      font-size: 16px;
+      color: #333;
+    }
+    .profile-card p {
+      margin: 4px 0;
+      font-size: 14px;
+      color: #555;
+    }
+
+    .slider-container {
+      width: 80%;
+      margin: 0 auto;
+      margin-bottom: 50px;
+    }
+    .slick-slide {
+      outline: none; 
+      text-align: center;
+    }
+    .slick-slide img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Rastgele Profil Kartları & Animasyonlu Arayüz</h1>
+
+  <button id="fetchUsersBtn">Kullanıcıları Getir</button>
+
+  <div id="profilesContainer"></div>
+
+  <h2>Slick Slider Örneği</h2>
+  <div class="slider-container">
+    <div id="profileSlider" class="slider"></div>
+  </div>
+
+  <script>
+    Fancybox.bind('[data-fancybox="gallery"]', {});
+
+    $(document).ready(function() {
+      $("#fetchUsersBtn").on("click", function() {
+        $(this).addClass("shake-anim");
+        setTimeout(() => {
+          $(this).removeClass("shake-anim");
+        }, 500); 
+
+        $.ajax({
+          url: "https://randomuser.me/api/?results=5",
+          dataType: "json",
+          success: function(data) {
+            const users = data.results;
+            $("#profilesContainer").empty();
+            $("#profileSlider").empty();
+            users.forEach((user, index) => {
+              const cardHtml = `
+                <div class="profile-card">
+                  <a data-fancybox="gallery"
+                     href="${user.picture.large}"
+                     data-caption="<strong>${user.name.title} ${user.name.first} ${user.name.last}</strong><br>Email: ${user.email}<br>Ülke: ${user.location.country}">
+                    <img src="${user.picture.large}" alt="${user.name.first}">
+                  </a>
+                  <h2>${user.name.title} ${user.name.first} ${user.name.last}</h2>
+                  <p>Email: ${user.email}</p>
+                  <p>Ülke: ${user.location.country}</p>
+                </div>
+              `;
+
+              $("#profilesContainer").append(cardHtml);
+
+              const sliderItem = `
+                <div>
+                  <img src="${user.picture.large}" alt="${user.name.first}">
+                  <p>${user.name.first}</p>
+                </div>
+              `;
+              $("#profileSlider").append(sliderItem);
+            });
+
+            $(".profile-card").each(function(i, el) {
+              $(el).delay(i * 200).fadeIn(600);
+            });
+            if ($("#profileSlider").hasClass("slick-initialized")) {
+              $("#profileSlider").slick("unslick");
+            }
+            $("#profileSlider").slick({
+              dots: true,
+              arrows: true,
+              infinite: true,
+              speed: 500,
+              slidesToShow: 3,
+              slidesToScroll: 1,
+              autoplay: true,
+              autoplaySpeed: 3000,
+              responsive: [
+                  {
+                      breakpoint: 1024,
+                      settings: {
+                          slidesToShow: 2
+                      }
+                  },
+                  {
+                      breakpoint: 600,
+                      settings: {
+                          slidesToShow: 1
+                      }
+                  }
+              ]
+            });
+          },
+          error: function(xhr, status, error) {
+            console.error("AJAX Hatası:", status, error);
+          }
+        });
+      });
+
+      $(document).on("mouseenter", ".profile-card", function() {
+        $(this).fadeTo("fast", 0.8).css("border-color", "black");
+      }).on("mouseleave", ".profile-card", function() {
+        $(this).fadeTo("fast", 1).css("border-color", "#ccc"); 
+      });
+    
+
+    });
+  </script>
+</body>
+</html>
