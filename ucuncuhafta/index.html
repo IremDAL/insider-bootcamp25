@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mini E-Ticaret</title>
+  <link rel="stylesheet" href="index.css" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+</head>
+<body>
+
+  <header>
+    <h2>Mini E-Ticaret</h2>
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Ürün Ara" />
+    </div>
+    <div class="icons">
+      <span class="material-icons icon-btn" id="userIcon">person</span>
+      <div class="shopping-icons">
+        <span class="material-icons icon-btn" id="cartIcon">shopping_cart</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </div>
+    </div>
+  </header>
+
+
+  <div id="productTemplate" style="display: none;">
+    <div class="slide product-card" data-id="">
+      <img src="" alt="" />
+      <div class="slide-info">
+        <strong class="product-title"></strong>
+        <p class="product-price"></p>
+        <button class="add-to-cart shake">Sepete Ekle</button>
+        <button class="view-details shake" data-pid="">Detay Göster</button>
+
+        <a 
+          href="" 
+          data-fancybox="" 
+          data-caption=""
+          class="fancybox-item hidden-fb"
+          style="display:none;">
+          <img src="" alt="" />
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="product-slider" id="productSlider"></div>
+  
+  <div class="cart" id="cart">
+    <h2>Sepet</h2>
+    <div id="cartItems"></div>
+    <div class="cart-buttons">
+      <button id="clearCart">Sepeti Temizle</button>
+      <button id="goCart">Sepete Git</button>
+    </div>
+  </div>
+  
+  <script>
+
+    let allProducts = [];
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    $(document).ready(function () {
+
+      function fetchProducts() {
+        $.ajax({
+          url: "https://fakestoreapi.com/products",
+          method: "GET",
+          success: function (data) {
+            allProducts = data;
+            createSlider(allProducts); 
+          },
+          error: function() {
+            alert("Ürünler yüklenirken bir hata oluştu!");
+          }
+        });
+      }
+
+      function createSlider(products) {
+        if ($("#productSlider").hasClass("slick-initialized")) {
+          $("#productSlider").slick("unslick");
+        }
+
+        $("#productSlider").empty();
+
+        products.forEach(product => {
+          let $template = $("#productTemplate .product-card"); 
+          let $clone = $template.clone(true); 
+
+          $clone.attr("data-id", product.id);
+          $clone.find("img").attr("src", product.image).attr("alt", product.title);
+          $clone.find(".product-title").text(product.title);
+          $clone.find(".product-price").text(product.price + " TL");
+          $clone.find(".view-details").attr("data-pid", product.id);
+
+          let $fancyboxLink = $clone.find(".hidden-fb");
+          $fancyboxLink.attr("href", product.image);
+          $fancyboxLink.attr("data-fancybox", "product-" + product.id);
+          $fancyboxLink.attr("data-caption", product.title);
+          $fancyboxLink.find("img").attr("src", product.image).attr("alt", product.title);
+          $("#productSlider").append($clone);
+        });
+
+        if (products.length === 0) {
+          $("#productSlider").html("<p style='text-align:center;'>Aradığınız kriterde ürün bulunamadı.</p>");
+        }
+        else {
+          initSlickSlider();
+          initFancybox();
+        }
+      }
+
+      function initSlickSlider() {
+        $("#productSlider").slick({
+          autoplay: true,
+          autoplaySpeed: 3000,
+          dots: true,
+          arrows: true,
+          infinite: true,
+          speed: 600,
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          responsive: [
+            { 
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 2 
+                } 
+            },
+            { 
+              breakpoint: 480, 
+              settings: { 
+                slidesToShow: 1 
+              } 
+            }
+          ]
+        });
+      }
+
+      function initFancybox() {
+        Fancybox.bind('[data-fancybox^="product-"]', {
+          AnimationEffect: "zoom",
+          AnimationDuration: 300
+        });
+      }
+
+
+      function updateCart() {
+        $("#cartItems").empty();
+
+        if (cart.length === 0) {
+          $("#cartItems").html("<p class='empty'>Sepetiniz boş</p>");
+        } else {
+          cart.forEach(item => {
+            let cartCard = $(`
+              <div class="cart-card">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="details">
+                  <strong>${item.title}</strong><br>
+                  ${item.price} TL <br>
+                  <small>Adet: ${item.quantity}</small>
+                </div>
+              </div>
+            `);
+            $("#cartItems").append(cartCard);
+          });
+        }
+        $("#cartCount").text(getTotalItemCount());
+      }
+
+      function getTotalItemCount() {
+        let total = 0;
+        cart.forEach(item => total += item.quantity);
+        return total;
+      }
+
+      updateCart();
+
+      $(document).on("click", ".add-to-cart", function () {
+        let productCard = $(this).closest(".product-card");
+        let productId   = parseInt(productCard.data("id"));
+        let imgSrc      = productCard.find("img").attr("src");
+        let title       = productCard.find(".product-title").text();
+        let price       = productCard.find(".product-price").text().replace(" TL", "");
+
+        let existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+          existingItem.quantity++;
+        } else {
+          cart.push({
+            id: productId,
+            image: imgSrc,
+            title: title,
+            price: price,
+            quantity: 1
+          });
+        }
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCart();
+
+        $("#cart").fadeIn();
+        setTimeout(() => $("#cart").fadeOut(), 3000);
+
+        productCard.animate({ opacity: 0.8 }, 300).animate({ opacity: 1 }, 300);
+      });
+
+
+      $(document).on("click", ".view-details", function() {
+        let productCard = $(this).closest(".product-card");
+        let productId = $(this).data("pid");
+
+        let $fancyboxLink = productCard.find(".hidden-fb").eq(0);
+        let href = $fancyboxLink.attr("href");
+        let caption = $fancyboxLink.attr("data-caption");
+
+        Fancybox.show([
+        { src: href,
+          caption: caption
+        }]);
+      });
+
+      $("#clearCart").click(function () {
+        cart = [];
+        localStorage.removeItem("cart");
+        updateCart();
+        $("#cart").fadeOut();
+      });
+
+      $("#search").on("input", function () {
+        let value = $(this).val().toLowerCase().trim();
+        let filtered = allProducts.filter(p =>
+          p.title.toLowerCase().includes(value)
+        );
+        createSlider(filtered);
+      });
+
+      $("#cartIcon").click(function () {
+        if ($("#cartItems").children().length === 0) {
+          $("#cartItems").html("<p class='empty'>Sepetiniz boş</p>");
+          $("#cart").fadeIn();
+        } else {
+          $("#cart").fadeToggle();
+        }
+      });
+      
+      $("#goCart").click(function() {
+        alert("Sepete gitme işlemi burada yapılabilir!");
+      });
+
+      fetchProducts();
+    });
+  </script>
+</body>
+</html>
