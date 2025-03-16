@@ -1,0 +1,72 @@
+Hata 1: Sepete eklenen ürün sayısı, stok miktarından fazla olabiliyor.
+
+addItem fonksiyonunda breakpoint koyarak product.stock ve quantity değişkenlerini Watch List'e ekledim.
+
+Step Into (F11) ile stok kontrolünün doğru çalışıp çalışmadığını inceledim.
+
+if (product.stock <= quantity) kontrolü yanlış çalışıyordu.
+
+product.stock değeri güncellenmediği için bu kontrolün içine hiç girmiyor, o yüzden hep ekleme yapıyor.
+
+product.stock -= quantity; stoktan düme işlemi eklenmeli.
+
+Hata 2: Ürün fiyatı, ürün miktarıyla çarpılmadan toplama ekleniyor
+
+calculateTotal fonksiyonunda breakpoint koyarak her bir ürünün item.price ,sum ve thistotal değerlerini Watch List'e ekledim.
+
+sum + item.price; satırının hatalı olduğunu fark ettim, burada her bir ürünü adet sayısı ile çarpması gerekiyordu. 
+
+Doğru yöntem : return sum + (item.price * item.quantity);
+
+Hata 3: Sepete ekle dediğinde stok sayısı güncellenmiyor
+
+addItem ve updateUI fonksiyonuna breakpoint koydum ve F11 ile foksiyonların içine girdim.
+
+Bu kısımda  product.stock değeri değişmediği için renderProducts fonksionunda product.stock değerinin yanlış geldiğini gördüm.
+
+Hata 4: ürün tamamen silindikten sonra ürünü tekrar ekleyince stock değeri 1 artıyor
+
+removeItem ve updateUI fonksiyonlarına breakpoint koydum ve product.stock değeri watch liste ekledim.
+
+Ben burada özellile const product = products.find(p => p.id === productId);
+
+if (product) {
+    product.stock += 1; // item.quantity yerine sabit değer
+} 
+bu satırlara ve addItem fonksiyonu içindeki if (product.stock <= quantity) bu satıra breakpoint koydum.
+
+product.stock'u watch.list de izledim.
+
+Bu kısımda product.stock un değeri 1 arttığı için yeni gelen product.stock değeri hep bir fazlası geliyordu.
+
+Hata 5: silinen ürünlerin miktarı yine stok a yansımıyor stok hiç değişmiyor. 
+
+Burada da yine removeItem fonksionuna debug koydum ve product.stock += 1; değerinin burada yanlış olduğunu gördüm. 
+
+Doğru işlemin quantity kadar azalması gerektiğini tespit ettim. 
+
+Doğru yöntem : product.stock -= quantity;
+
+Hata 6: İndirim kuponu fiyata yansımıyor 
+
+Burada da calculateTotal fonksyonunu içinde 
+if (this.discountApplied && this.total > 0) {
+    this.total *= 0.1;
+} 
+breapoint koydum ve this.total değerini watch.list e ekledim.
+
+Aynı zamanda applyDiscount ve setUpEvenHandles fonksiyonlarına da breakpoint ekledim. 
+
+Fiyat güncelleniyor fakat yanlış değerde güncelleniyor böyle %90 indirim yapmış oluyorsun ama bizim %10 ypmamız gerek.
+
+Bundan dolayı da this.total *=0,9 olmalı ve aynı zamanda UpdateUI da price değeri güncellenmediği için indirimli fiyat ekrana yansımıyor.
+
+setUpEvebHandlers fonksiyonu applyDiscount u tetikliyor applyDiscount da calculateTotal ve UpdateU foksyonunu tetikliyor.
+
+Hata 7: İndirim kodu geçersiz olduğunda "Geçersiz indirim kodu!" mesajı tekrar tekrar ekleniyor.
+
+Bunun için showErrorMessage fonksiyonuna breakpoint koyuyorum.
+
+errorElement.textContent += message + '\n'; bu satırda textContent üzerine ekleme (+=) yapıyor.
+
+Bu yüzden her tıkladığında mesaj birikerek ekranda tekrar tekrar görüntüleniyor.
