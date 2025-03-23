@@ -279,11 +279,6 @@
         }
 
         @media (max-width: 1200px) {
-          .carousel-product {
-            flex: 0 0 calc(20% - 20px); 
-          }
-
-        @media (max-width: 1200px) {
             .carousel-product {
               flex: 0 0 calc(25% - 20px); 
             }
