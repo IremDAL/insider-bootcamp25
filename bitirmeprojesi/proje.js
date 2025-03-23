@@ -243,13 +243,14 @@
           gap: 0px;
           position: relative;
           min-height: 400px;
+          padding: 0 100px; 
+          box-sizing: border-box;
         }
-
 
         .scroll-button {
           position: absolute;
-          top: 50%;               
-          transform: translateY(-50%); 
+          top: 50%;
+          transform: translateY(-50%);
           background: #fff7ed;
           border: 2px solid transparent;
           width: 50px;
@@ -264,18 +265,20 @@
           align-items: center;
           justify-content: center;
           z-index: 10;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+        }
+
+        .scroll-prev {
+          left: 50px;
+        }
+
+        .scroll-next {
+          right: 50px;
         }
 
         .scroll-button:hover {
           background: #fff;
           border-color: #f7941d;
-        }
-        .scroll-prev {
-          left: 70px;
-        }
-
-        .scroll-next {
-          right: 70px;
         }
 
         @media (max-width: 1200px) {
@@ -316,7 +319,6 @@
               padding: 0 8px;
             }
           }
-        
       `;
       document.head.appendChild(style);
     };
